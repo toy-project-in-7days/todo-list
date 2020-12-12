@@ -20,6 +20,3 @@ DoneList : [
   
 ## Duration
 2020.12.14 ~ 2020.12.20
-
-js
-document.getElementById('1')
