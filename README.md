@@ -1,9 +1,9 @@
 # todo-list
 
-##Introduction
+## Introduction
 Simple TodoList using javascript
 
-##Data Structure
+## Data Structure
 ```
 TodoList : [ 
   { title, content, createdDate } 
@@ -14,10 +14,12 @@ TodoList : [
 DoneList : [
   { title, content, createdDate }
 ]
-```
+````
 
-
-##Role
+## Role
   
-##Duration
+## Duration
 2020.12.14 ~ 2020.12.20
+
+js
+document.getElementById('1')
