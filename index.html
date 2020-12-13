@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>        
+        <link href="style/main.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <header>
+            <h1>Issho TodoList</h1>
+            <div class="input-container">
+                <input type="text" id="input-title" placeholder="제목이에요!"/>
+                <input type="text" id="input-content" placeholder="할일을 작성해보세요!"/>
+                <button type="button" id="add-btn">추가</button>
+            </div>
+        </header>
+        <main>
+            <div class="list-container">     
+                <div class="list-container__todo">
+                    <span class="selection">Todo</a></span>
+                    <table id="todo-list-container">
+                        <thead>
+                            <tr>
+                                <th>Check</th>
+                                <th>Todo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todo-list">
+                            <!-- <tr>
+                                <td>dd</td>
+                                <td>dd</td>
+                            </tr> -->
+                        </tbody>                        
+                    </table>
+                    <span>새로운 할일을 추가해보세요!</span>
+                </div>
+                <div class="list-container__done">
+                    <span class="selection">Done</span>
+                    <table>
+                        <thead>
+                            <tr>내용</tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>    
+                </div>
+            </div>
+            <script src="js/todo.js"></script>
+        </main>
+        
+    </body>
+</html>

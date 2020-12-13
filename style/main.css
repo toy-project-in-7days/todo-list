@@ -1,0 +1,27 @@
+body,
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-container,
+.input-container {
+  display: flex;
+  justify-content: center;
+}
+.list-table {
+  border: 2px solid black;
+}
+
+.list-container__todo,
+.list-container__done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selection {
+  border-bottom: 3px solid black;
+  margin: 25px 140px;
+}
