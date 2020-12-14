@@ -4,6 +4,9 @@ header {
   flex-direction: column;
   align-items: center;
 }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 .list-container,
 .input-container {
@@ -24,4 +27,69 @@ header {
 .selection {
   border-bottom: 3px solid black;
   margin: 25px 140px;
+}
+
+input {
+  margin-left: 5px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border-bottom: 1px solid black;
+  text-align: center;
+  padding: 8px;
+}
+
+td:nth-child(2):hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+td > button {
+  background-color: white;
+  border: white;
+}
+
+td > button:hover {
+  color: skyblue;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+}
+.modal-box {
+  width: 20%;
+  position: relative;
+  padding: 50px 100px;
+  background-color: white;
+  text-align: center;
+  border-radius: 6px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
+}
+.hidden {
+  display: none;
+}
+.modal_text {
+  padding: 16px;
 }
