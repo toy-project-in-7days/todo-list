@@ -6,13 +6,13 @@ Simple TodoList using javascript
 ## Data Structure
 ```
 TodoList : [ 
-  { title, content, createdDate } 
+  { id, title, content, createdDate } 
 ]
 ```
 
 ```
 DoneList : [
-  { title, content, createdDate }
+  { id, title, content, createdDate }
 ]
 ````
 
