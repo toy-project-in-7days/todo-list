@@ -21,13 +21,10 @@
                             <tr>
                                 <th>Check</th>
                                 <th>Todo</th>
+                                <th>Options</th>
                             </tr>
                         </thead>
                         <tbody id="todo-list">
-                            <!-- <tr>
-                                <td>dd</td>
-                                <td>dd</td>
-                            </tr> -->
                         </tbody>                        
                     </table>
                     <span>새로운 할일을 추가해보세요!</span>
@@ -38,14 +35,18 @@
                         <thead>
                             <tr>내용</tr>
                         </thead>
-                        <tbody>
-                            
+                        <tbody>                            
                         </tbody>
                     </table>    
                 </div>
-            </div>
-            <script src="js/todo.js"></script>
+            </div>            
         </main>
-        
+        <div class="modal hidden">
+            <div class="modal-overlay"></div>
+                <div id="modal-box" class="modal-box">                
+                    <button id="modal-close-btn">X</button>
+                </div>
+        </div>
+        <script src="js/todo.js"></script>
     </body>
 </html>
