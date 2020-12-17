@@ -10,7 +10,10 @@ let viewData = [{
 
 }]
 
-let id = 0;
+let todoId = 0;
+let doneId = 0;
+let removeTodoList = [];
+let alreadyRemoved = [];
 const todoTable = document.getElementById('todo-list');
 const doneTable = document.getElementById('done-list');
 const addBtn = document.getElementById('add-btn');
@@ -38,19 +41,21 @@ addBtn.addEventListener("click", () => {
         alert('할 일을 입력해주세요 !')
     }
     else {
-        id += 1;
-        const trId = id;
+        todoId += 1;
+        doneId += 2;
+        const todoTrId = todoId;
+        const doneTrId = doneId;
         const addTitle = title.value;
         const addContent = content.value;
         const tr = document.createElement('tr');
-        tr.id = trId;
+        tr.id = todoTrId;
         const titleTd = document.createElement('td');
         const checkTd = document.createElement('td');
         const buttonTd = document.createElement('td');
         const check = document.createElement('input');
         check.type = 'checkbox';
-        check.addEventListener("click", ()=> onClick(trId, titleTd, addTitle, addContent));
-        todoData.push({ id: id, title: addTitle, content: addContent });
+        check.addEventListener("click", ()=> onClick(todoTrId, doneTrId, titleTd, addTitle, addContent));
+        todoData.push({ id: todoId, title: addTitle, content: addContent });
         todoListContainer.style.display = '';
         let span = todoListContainer.parentNode.childNodes[5];
         span.style.display = 'none';
@@ -59,12 +64,12 @@ addBtn.addEventListener("click", () => {
         checkTd.appendChild(check);
         tr.appendChild(titleTd);
 
-        titleTd.addEventListener("click", ()=> onRead(trId, addTitle, addContent));
+        titleTd.addEventListener("click", ()=> onRead(todoTrId, addTitle, addContent));
         const deleteBtn = document.createElement('button');
-        deleteBtn.addEventListener('click', () => onDelete(trId));
+        deleteBtn.addEventListener('click', () => onDelete(todoTrId));
         deleteBtn.innerText = '삭제';
         const updateBtn = document.createElement('button');
-        updateBtn.addEventListener('click', () => onUpdate(trId));
+        updateBtn.addEventListener('click', () => onUpdate(todoTrId));
         updateBtn.innerText = '수정';
         buttonTd.appendChild(deleteBtn);
         buttonTd.appendChild(updateBtn);
@@ -78,21 +83,27 @@ addBtn.addEventListener("click", () => {
 
 submit.addEventListener('click', ()=> onCheck());
 
-const onClick = (id, title, addTitle, addContent)=>{
-    let _isChecked = doneData.find(done => done.id === id);
+const onClick = (todoId, doneId, title, addTitle, addContent)=>{
+    let _isChecked = doneData.find(done => done.id === doneId);
+    let _isRemoveChecked = removeTodoList.find(item => item === todoId);
     if(!_isChecked){
         title.style.textDecoration = "line-through";
-        doneData.push({ id: id, title: addTitle, content: addContent });
+        doneData.push({ id: doneId, title: addTitle, content: addContent });
     }
     else {
         title.style.textDecoration = "none";
-        doneData = doneData.filter(done => done.id !== id);
+        doneData = doneData.filter(done => done.id !== doneId);
+    }
+    if(!_isRemoveChecked){
+        removeTodoList.push(todoId);
+    }
+    else {
+        removeTodoList.filter(item => item !== todoId);
     }
     
 }
 
-const onRead =(id, title, content)=>{
-    
+const onRead =(id, title, content)=>{    
     document.querySelector('.modal').classList.remove('hidden');
     const modalTitle = document.createElement('h3');
     const modalContent = document.createElement('span');
@@ -128,22 +139,17 @@ const onCheck = () => {
      })
 
     todoData= todoData.filter((todo) =>{
-       let _remove = doneData.find(done => done.id === todo.id);
+       let _remove = removeTodoList.find(remove => remove.id === todo.id);
        return _remove === undefined;
     });
 
-    doneData.forEach((done, index)=> {
-        console.log('데이터 >>> ', done);
-        console.log('노드 >>> ', todoTable);
-        let _remove = todoData.find((item)=> {
-            item.id == done.id;
-        });
-        let _id = 0;
-        console.log(_remove);
-        if(index > 0 && !_remove){
-            _id = document.getElementById(done.id);
-            todoTable.removeChild(_id);            
-        }        
-    })    
-    
+    removeTodoList= removeTodoList.filter((item)=> item!== alreadyRemoved.find((remove)=> remove == item))
+
+    removeTodoList.forEach((id)=>{
+        alreadyRemoved.push(id);
+        console.log(id);
+        const remove = document.getElementById(id);
+        
+        todoTable.removeChild(remove);
+    })
 }
