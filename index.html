@@ -28,15 +28,18 @@
                         </tbody>                        
                     </table>
                     <span>새로운 할일을 추가해보세요!</span>
-                    <button id="submit">저장</button>
+                    <button class="submit" id="submit">저장</button>
                 </div>
                 <div class="list-container__done">
                     <span class="selection">Done</span>
-                    <table>
+                    <table id="done-list-container">
                         <thead>
-                            <tr>내용</tr>
+                            <tr>
+                                <th>Check</th>
+                                <th>Done</th>                                
+                            </tr>
                         </thead>
-                        <tbody>                            
+                        <tbody id="done-list">                            
                         </tbody>
                     </table>    
                 </div>
@@ -48,6 +51,6 @@
                     <button class="modal-close-btn" id="modal-close-btn">X</button>
                 </div>
         </div>
-        <script src="js/todo.js"></script>
+        <script src="js/test.js"></script>
     </body>
 </html>
