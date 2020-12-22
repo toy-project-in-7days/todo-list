@@ -10,6 +10,9 @@ let viewData = [{
 
 }]
 
+let flag = false;
+
+
 let todoId = 0;
 let doneId = 0;
 let removeTodoList = [];
@@ -24,6 +27,8 @@ const doneListContanier = document.getElementById('done-list-container');
 const closeModalBtn = document.getElementById('modal-close-btn');
 const modal = document.getElementById('modal-box');
 const submit = document.getElementById('submit');
+let addTitle ='';
+let addContent = '';
 
 if(!todoData.content){
     todoListContainer.style.display = 'none';
@@ -45,14 +50,14 @@ addBtn.addEventListener("click", () => {
         doneId += 2;
         const todoTrId = todoId;
         const doneTrId = doneId;
-        const addTitle = title.value;
-        const addContent = content.value;
         const tr = document.createElement('tr');
         tr.id = todoTrId;
         const titleTd = document.createElement('td');
         const checkTd = document.createElement('td');
         const buttonTd = document.createElement('td');
         const check = document.createElement('input');
+        addTitle = title.value;
+        addContent = content.value;
         check.type = 'checkbox';
         check.addEventListener("click", ()=> onClick(todoTrId, doneTrId, titleTd, addTitle, addContent));
         todoData.push({ id: todoId, title: addTitle, content: addContent });
@@ -69,7 +74,7 @@ addBtn.addEventListener("click", () => {
         deleteBtn.addEventListener('click', () => onDelete(todoTrId));
         deleteBtn.innerText = '삭제';
         const updateBtn = document.createElement('button');
-        updateBtn.addEventListener('click', () => onUpdate(todoTrId));
+        updateBtn.addEventListener('click', () => openUpdateModal(todoTrId, addTitle, addContent));
         updateBtn.innerText = '수정';
         buttonTd.appendChild(deleteBtn);
         buttonTd.appendChild(updateBtn);
@@ -103,6 +108,20 @@ const onClick = (todoId, doneId, title, addTitle, addContent)=>{
     
 }
 
+
+
+const closeReadModal =(title, content)=>{
+    document.querySelector('.modal').classList.add('hidden');
+    modal.removeChild(title);
+    modal.removeChild(content);    
+}
+
+const closeUpdateModal = (inputContainer)=>{
+    document.querySelector('.modal').classList.add('hidden');
+    modal.style.height ="";
+    modal.removeChild(inputContainer);
+}
+
 const onRead =(id, title, content)=>{    
     document.querySelector('.modal').classList.remove('hidden');
     const modalTitle = document.createElement('h3');
@@ -111,17 +130,48 @@ const onRead =(id, title, content)=>{
     modalContent.innerText = content;
     modal.appendChild(modalTitle);
     modal.appendChild(modalContent);
-    closeModalBtn.addEventListener('click', ()=> closeModal(modalTitle, modalContent));
+    closeModalBtn.addEventListener('click', ()=> closeReadModal( modalTitle, modalContent));
 }
 
-const closeModal =(title, content)=>{
-    document.querySelector('.modal').classList.add('hidden');
-    modal.removeChild(title);
-    modal.removeChild(content);
-}
+const openUpdateModal = (trId, title, content) => {
+    modal.style.height = "100px";
+    document.querySelector('.modal').classList.remove('hidden');
+    const inputContainer = document.createElement('div');
+    inputContainer.id = 'input-container'
+    inputContainer.style.display = 'flex';
+    inputContainer.style.flexDirection = 'column';
+    const inputTitle = document.createElement('input');
+    const inputContent = document.createElement('input');
+    const submit = document.createElement('button');
+    submit.innerText="저장"
+    inputTitle.value = title;
+    inputContent.value = content;
+    inputTitle.style.marginBottom="7px";
+    inputContent.style.marginBottom="20px";
+    inputContainer.appendChild(inputTitle);
+    inputContainer.appendChild(inputContent);
+    inputContainer.appendChild(submit);
+    modal.appendChild(inputContainer);
+    closeModalBtn.addEventListener('click', ()=> closeUpdateModal( inputContainer));
+    submit.addEventListener('click', ()=> onUpdate(trId, inputTitle.value, inputContent.value, inputContainer));
+};
 
-const onUpdate = trId => {console.log(trId)};
-const onDelete = trId => {console.log(trId)};
+const onUpdate = (id, title, value, inputContainer)=>{
+    let updateIndex = todoData.findIndex(item => item.id === id);
+    const updateItem = {id : id, title : title, value : value};
+    todoData.splice(updateIndex,1, updateItem );
+    const updateHTML = document.getElementById(id);
+    updateHTML.childNodes[1].innerText = title;
+    addTitle = title;
+    addContent = value;
+
+    closeUpdateModal( inputContainer)
+}
+const onDelete = trId => {
+    todoData = todoData.filter(item => item.id !==trId);
+    const remove = document.getElementById(trId);
+    todoTable.removeChild(remove);
+};
 
 const onCheck = () => {
     let _index = [];
