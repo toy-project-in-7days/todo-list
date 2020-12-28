@@ -15,6 +15,7 @@ let flag = false;
 
 let todoId = 0;
 let doneId = 0;
+let todoTitleId = 0;
 let removeTodoList = [];
 let alreadyRemoved = [];
 const todoTable = document.getElementById('todo-list');
@@ -29,7 +30,7 @@ const modal = document.getElementById('modal-box');
 const submit = document.getElementById('submit');
 let addTitle ='';
 let addContent = '';
-
+let isUpdated = [];
 if(!todoData.content){
     todoListContainer.style.display = 'none';
     doneListContanier.style.display = 'none';
@@ -39,6 +40,7 @@ if(!todoData.content){
 addBtn.addEventListener("click", () => {
     submit.style.display ='';
     //수정 버튼, 삭제 버튼 추가
+    const isAdd = true;
     if(title.value ==""){
         alert('제목을 입력해주세요 !')
     }
@@ -48,18 +50,23 @@ addBtn.addEventListener("click", () => {
     else {
         todoId += 1;
         doneId += 2;
+        todoTitleId -=1;
         const todoTrId = todoId;
         const doneTrId = doneId;
+        const todoTitleTdId = todoTitleId;
         const tr = document.createElement('tr');
         tr.id = todoTrId;
         const titleTd = document.createElement('td');
+        titleTd.id = todoTitleTdId;
         const checkTd = document.createElement('td');
         const buttonTd = document.createElement('td');
         const check = document.createElement('input');
         addTitle = title.value;
-        addContent = content.value;
+        addContent = content.value;  
+        const aT = addTitle;
+        const aC = addContent;
         check.type = 'checkbox';
-        check.addEventListener("click", ()=> onClick(todoTrId, doneTrId, titleTd, addTitle, addContent));
+        check.addEventListener("click", ()=> onClick(todoTrId, doneTrId, titleTd, aT, aC));
         todoData.push({ id: todoId, title: addTitle, content: addContent });
         todoListContainer.style.display = '';
         let span = todoListContainer.parentNode.childNodes[5];
@@ -68,13 +75,12 @@ addBtn.addEventListener("click", () => {
         tr.appendChild(checkTd);
         checkTd.appendChild(check);
         tr.appendChild(titleTd);
-
-        titleTd.addEventListener("click", ()=> onRead(todoTrId, addTitle, addContent));
+        titleTd.addEventListener("click", ()=> onRead(todoTrId, aT, aC));
         const deleteBtn = document.createElement('button');
         deleteBtn.addEventListener('click', () => onDelete(todoTrId));
         deleteBtn.innerText = '삭제';
         const updateBtn = document.createElement('button');
-        updateBtn.addEventListener('click', () => openUpdateModal(todoTrId, addTitle, addContent));
+        updateBtn.addEventListener('click', () => openUpdateModal(todoTrId, todoTitleTdId, aT, aC));
         updateBtn.innerText = '수정';
         buttonTd.appendChild(deleteBtn);
         buttonTd.appendChild(updateBtn);
@@ -89,6 +95,7 @@ addBtn.addEventListener("click", () => {
 submit.addEventListener('click', ()=> onCheck());
 
 const onClick = (todoId, doneId, title, addTitle, addContent)=>{
+    console.log(addTitle, addContent)
     let _isChecked = doneData.find(done => done.id === doneId);
     let _isRemoveChecked = removeTodoList.find(item => item === todoId);
     if(!_isChecked){
@@ -105,7 +112,6 @@ const onClick = (todoId, doneId, title, addTitle, addContent)=>{
     else {
         removeTodoList.filter(item => item !== todoId);
     }
-    
 }
 
 
@@ -124,16 +130,17 @@ const closeUpdateModal = (inputContainer)=>{
 
 const onRead =(id, title, content)=>{    
     document.querySelector('.modal').classList.remove('hidden');
-    const modalTitle = document.createElement('h3');
-    const modalContent = document.createElement('span');
-    modalTitle.innerText = title;
-    modalContent.innerText = content;
-    modal.appendChild(modalTitle);
-    modal.appendChild(modalContent);
-    closeModalBtn.addEventListener('click', ()=> closeReadModal( modalTitle, modalContent));
+        const modalTitle = document.createElement('h3');
+        const modalContent = document.createElement('span');
+        modalTitle.innerText = title;
+        modalContent.innerText = content;
+        modal.appendChild(modalTitle);
+        modal.appendChild(modalContent);
+        closeModalBtn.addEventListener('click', ()=> closeReadModal( modalTitle, modalContent));
+
 }
 
-const openUpdateModal = (trId, title, content) => {
+const openUpdateModal = (trId, titleId, title, content) => {
     modal.style.height = "100px";
     document.querySelector('.modal').classList.remove('hidden');
     const inputContainer = document.createElement('div');
@@ -153,18 +160,21 @@ const openUpdateModal = (trId, title, content) => {
     inputContainer.appendChild(submit);
     modal.appendChild(inputContainer);
     closeModalBtn.addEventListener('click', ()=> closeUpdateModal( inputContainer));
-    submit.addEventListener('click', ()=> onUpdate(trId, inputTitle.value, inputContent.value, inputContainer));
+    submit.addEventListener('click', ()=> onUpdate(trId, titleId, inputTitle.value, inputContent.value, inputContainer));
 };
 
-const onUpdate = (id, title, value, inputContainer)=>{
-    let updateIndex = todoData.findIndex(item => item.id === id);
+const onUpdate = (id,titleId, title, value, inputContainer)=>{
+    let updateIndex = todoData.findIndex(item => item.id === id);    
     const updateItem = {id : id, title : title, value : value};
-    todoData.splice(updateIndex,1, updateItem );
+    todoData.splice(updateIndex,1, updateItem );    
     const updateHTML = document.getElementById(id);
-    updateHTML.childNodes[1].innerText = title;
-    addTitle = title;
-    addContent = value;
-
+    const titleHTML = document.getElementById(titleId);
+    const titleTd = document.createElement('td');
+    titleTd.innerText = title;  
+    titleTd.id = titleId;
+    titleTd.addEventListener("click", ()=> onRead(id, title, value))
+    updateHTML.removeChild(titleHTML);
+    updateHTML.insertBefore(titleTd, updateHTML.childNodes[1]);
     closeUpdateModal( inputContainer)
 }
 const onDelete = trId => {
@@ -177,11 +187,12 @@ const onCheck = () => {
     let _index = [];
     doneListContanier.style.display = '';
     doneTable.innerHTML = '';
+    console.log(doneData);
     doneData.forEach((item, index)=> {
          if( index > 0){
              const tr = document.createElement('tr');
-             tr.id = item.id;
              const titleTd = document.createElement('td');
+             tr.id = item.id;             
              titleTd.innerText = item.title;
              tr.appendChild(titleTd);
              doneTable.appendChild(tr);
