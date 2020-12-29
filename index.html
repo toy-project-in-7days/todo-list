@@ -9,7 +9,8 @@
             <div class="input-container">
                 <input type="text" id="input-title" placeholder="제목이에요!"/>
                 <input type="text" id="input-content" placeholder="할일을 작성해보세요!"/>
-                <button type="button" id="add-btn">추가</button>
+                <input type="date" id="input-date"/>
+                <button class="add" type="button" id="add-btn">추가</button>
             </div>
         </header>
         <main>
@@ -21,6 +22,7 @@
                             <tr>
                                 <th>Check</th>
                                 <th>Todo</th>
+                                <th>DeadLine</th>
                                 <th>Options</th>
                             </tr>
                         </thead>
@@ -38,7 +40,7 @@
                                 <th>Done</th>                                
                             </tr>
                         </thead>
-                        <tbody id="done-list">                            
+                        <tbody id="done-list">                         
                         </tbody>
                     </table>    
                 </div>
