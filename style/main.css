@@ -64,6 +64,12 @@ td > button:hover {
 
 .submit {
   margin-top: 10px;
+  background-color: black;
+  color: white;
+}
+.add {
+  background-color: black;
+  color: white;
 }
 
 .modal {
@@ -90,11 +96,23 @@ td > button:hover {
   position: relative;
   padding: 20px 75px;
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   text-align: center;
   border-radius: 6px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
 }
+
+.modal-box input {
+  width: 80%;
+}
+
 .hidden {
+  display: none;
+}
+.popover-hidden {
   display: none;
 }
 .modal_text {
@@ -106,9 +124,32 @@ td > button:hover {
   right: 15px;
 }
 
-#done-list tr,
-td {
+.relative {
+  position: relative;
+}
+
+#done-list td {
   animation: fade-in ease-in-out 1s;
+}
+
+#todo-list tr {
+  animation: fade-in ease-in-out 1s;
+}
+
+.popover {
+  position: absolute;
+  left: 69%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popover-box {
+  padding: 20px 10px;
+  background-color: white;
+  text-align: center;
+  border-radius: 10px;
+  border-top-left-radius: 0px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes fade-in {
